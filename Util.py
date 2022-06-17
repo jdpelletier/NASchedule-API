@@ -25,6 +25,7 @@ def writeToJson(f):
         json.dump(parsed_holidays, f, ensure_ascii=False, indent=4)
 
     df = df.drop(df.columns[5], axis=1)
+    df = df.loc[:,:"Remote OAs"]
 
 
     df = df.to_json(orient='records')
