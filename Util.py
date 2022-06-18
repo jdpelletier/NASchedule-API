@@ -16,22 +16,22 @@ def writeToJson(f):
     df = df.drop(df.columns[7], axis=1)
     df = df.drop(df.columns[7], axis=1)
 
-    holidays = df.loc[df['Holiday'] == "X"]
-    holidays.reset_index(drop=True, inplace=True)
-    holidays = holidays.to_json(orient='records')
-    parsed_holidays = json.loads(holidays)
+    # holidays = df.loc[df['Holiday'] == "X"]
+    # holidays.reset_index(drop=True, inplace=True)
+    # holidays = holidays.to_json(orient='records')
+    # parsed_holidays = json.loads(holidays)
+    #
+    # with open('holidays.json', 'w', encoding='utf-8') as f:
+    #     json.dump(parsed_holidays, f, ensure_ascii=False, indent=4)
 
-    with open('holidays.json', 'w', encoding='utf-8') as f:
-        json.dump(parsed_holidays, f, ensure_ascii=False, indent=4)
-
-    df = df.drop(df.columns[5], axis=1)
+    # df = df.drop(df.columns[5], axis=1)
     df = df.loc[:,:"Remote OAs"]
 
 
     df = df.to_json(orient='records')
     parsed = json.loads(df)
 
-    with open('data.json', 'w', encoding='utf-8') as f:
+    with open('schedule.json', 'w', encoding='utf-8') as f:
         json.dump(parsed, f, ensure_ascii=False, indent=4)
 
     return 200
@@ -44,7 +44,7 @@ def readFromJson(f):
     return json.dumps(data)
 
 def exportPersonalSchedule(f, employee):
-    df = pd.read_json('data.json')
+    df = pd.read_json('schedule.json')
     for col in df:
         if col != employee and col != 'Date':
             df = df.drop(columns=col)
