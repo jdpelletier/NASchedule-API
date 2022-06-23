@@ -48,3 +48,18 @@ def nightlogsubmition():
 @cross_origin()
 def viewnightlog():
     return Util.viewnightlog(request.get_json())
+
+@main.route('/deletenightlog', methods=['POST'])
+@cross_origin()
+def deletenightlog():
+    return Util.deletenightlog(request.get_json())
+
+@main.route('/editnightlog', methods=['POST'])
+@cross_origin()
+def editnightlog():
+    return Util.editnightlog(request.get_json())
+
+@main.route('/editnightlogsubmition', methods=['POST'])
+@cross_origin()
+def editnightlogsubmition():
+    return Util.editnightlogsubmition(request.get_json())
