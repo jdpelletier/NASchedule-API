@@ -27,6 +27,6 @@ if __name__ == '__main__':
     port = 53872
 
     # run flask server
-    print(f"Starting NA Homepage API: PORT = {port})
+    print(f"Starting NA Homepage API: PORT = {port}")
     app.run(host=host, port=port)
     print("Stopping NA Homepage API.")
