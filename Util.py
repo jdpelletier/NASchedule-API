@@ -108,7 +108,7 @@ def deletenightlog(nightlog):
     with open('nightlog.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    return json.dumps(data)
 
 def editnightlogsubmition(nightlog):
     logid = nightlog["LogID"]
