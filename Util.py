@@ -97,26 +97,20 @@ def viewnightlog(nightlog):
     return  json.dumps({'success':False}), 404, {'ContentType':'application/json'}
 
 def deletenightlog(nightlog):
-    print("deletenight function running")
     logid = nightlog["LogID"]
     with open('nightlog.json', 'r', encoding='utf-8') as f:
         str = f.read()
         data = json.loads(str)
-        print("read nightlog")
     for i in range(len(data)):
-        print(f"{i}")
         if data[i]["LogID"] == logid:
-            print("popped")
             data.pop(i)
             break
     with open('nightlog.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
-        print("writing to log")
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 def editnightlogsubmition(nightlog):
-    print("edit nightlog sub running")
     logid = nightlog["LogID"]
     with open('nightlog.json', 'r', encoding='utf-8') as f:
         str = f.read()
