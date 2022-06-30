@@ -116,6 +116,7 @@ def deletenightlog(nightlog):
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 def editnightlogsubmition(nightlog):
+    print("edit nightlog sub running")
     logid = nightlog["LogID"]
     with open('nightlog.json', 'r', encoding='utf-8') as f:
         str = f.read()
