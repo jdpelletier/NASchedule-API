@@ -107,6 +107,7 @@ def deletenightlog(nightlog):
             break
     with open('nightlog.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
+        print("DELETION")
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
