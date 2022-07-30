@@ -12,11 +12,19 @@ def update_schedule():
     status = Util.writeToJson(f)
     return Util.readFromJson('schedule.json')
 
+###Old, read from generator JSON
+# @main.route('/')
+# @cross_origin()
+# def display_schedule():
+#     f = 'schedule.json'
+#     return Util.readFromJson(f)
+
+
+###New, read from tel schedule
 @main.route('/')
 @cross_origin()
 def display_schedule():
-    f = 'schedule.json'
-    return Util.readFromJson(f)
+    return Util.readFromTelSched()
 
 @main.route('/get-employee-schedule', methods=['POST'])
 @cross_origin()

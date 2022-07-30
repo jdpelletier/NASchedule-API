@@ -43,6 +43,71 @@ def readFromJson(f):
 
     return json.dumps(data)
 
+def readFromTelSched():
+    start_time = time.time()
+
+    today = datetime.now()
+    previousMonth = today-relativedelta(months=1)
+    startyear = previousMonth.year
+    startmonth = previousMonth.month
+    lastyear = (today+relativedelta(months=4)).year
+    lastmonth = (today+relativedelta(months=4)).month
+    dates = []
+    dates.append(previousMonth.strftime("%Y-%m"))
+    dates.append(today.strftime("%Y-%m"))
+    for i in range(1,4):
+        day = today+relativedelta(months=i)
+        dates.append(day.strftime("%Y-%m"))
+
+    nightstaff = []
+    for d in dates:
+        response = requests.get(f"https://www.keck.hawaii.edu/software/db_api/telSchedule.php?cmd=getNightStaff&date={d}")
+        data = response.json()
+        nightstaff.append(data)
+
+    nightstaff=nightstaff[0]+nightstaff[1]+nightstaff[2]+nightstaff[3]+nightstaff[4]
+    nightstaff[:] = [x for x in nightstaff if "oa" in x["Type"] or "na" in x["Type"]]
+
+    nas = [x for x in nightstaff if "na" in x["Type"]]
+    na_names = []
+    for n in nas:
+        name = n["FirstName"][0] + n["LastName"][0]
+        if name not in na_names:
+            na_names.append(name)
+
+    schedule = []
+    for i in range(startmonth,lastmonth):
+        for d in [x for x in Calendar().itermonthdates(startyear, i) if x.month == i]: #todo add checks for different years
+            night = {}
+            night["DOW"] = d.strftime('%A')[:3]
+            night["Date"] = datetime.fromtimestamp(time.mktime(d.timetuple())).timestamp()*1000
+            summit_staff = 0
+            remote_oa = 0
+            for name in na_names:
+                night[name] = None
+            for staff in nightstaff:
+                s_date = datetime.strptime(staff["Date"], '%Y-%m-%d').date()
+                if s_date > d:
+                    break
+                if s_date == d:
+                    if "r" in staff["Type"]:
+                        remote_oa += 1
+                    elif "oao" not in staff["Type"]:
+                        summit_staff += 1
+
+                    if "na" in staff["Type"]:
+                        name = staff["FirstName"][0] + staff["LastName"][0]
+                        night[name] = staff["Type"].upper()
+            if summit_staff == 0:
+                break
+            night["Holiday"] = None #todo get holidays
+            night["Summit Staff"] = summit_staff
+            night["Remote OAs"] = remote_oa
+            schedule.append(night)
+
+    return(json.dumps(night))
+
+
 def exportPersonalSchedule(f, employee):
     df = pd.read_json('schedule.json')
     for col in df:
