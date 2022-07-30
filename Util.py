@@ -61,13 +61,13 @@ def readFromTelSched():
     for i in range(1,4):
         day = today+relativedelta(months=i)
         dates.append(day.strftime("%Y-%m"))
-    print(dates)
 
     nightstaff = []
     for d in dates:
         response = requests.get(f"https://www.keck.hawaii.edu/software/db_api/telSchedule.php?cmd=getNightStaff&date={d}")
         data = response.json()
         nightstaff.append(data)
+    print(nightstaff)
 
     nightstaff=nightstaff[0]+nightstaff[1]+nightstaff[2]+nightstaff[3]+nightstaff[4]
     nightstaff[:] = [x for x in nightstaff if "oa" in x["Type"] or "na" in x["Type"]]
