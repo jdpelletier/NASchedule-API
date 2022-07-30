@@ -5,7 +5,6 @@ import requests
 from dateutil.relativedelta import relativedelta
 from calendar import Calendar
 import time
-import json
 
 
 def writeToJson(f):
@@ -50,8 +49,6 @@ def readFromJson(f):
     return json.dumps(data)
 
 def readFromTelSched():
-    start_time = time.time()
-
     today = datetime.now()
     previousMonth = today-relativedelta(months=1)
     startyear = previousMonth.year
@@ -64,6 +61,7 @@ def readFromTelSched():
     for i in range(1,4):
         day = today+relativedelta(months=i)
         dates.append(day.strftime("%Y-%m"))
+    print(dates)
 
     nightstaff = []
     for d in dates:
